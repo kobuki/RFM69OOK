@@ -10,8 +10,8 @@ void setup() {
   Serial.begin(115200);
   radio.initialize();
   radio.transmitBegin();
-  radio.setFrequencyMHz(868.88);
-  // radio.setFrequencyMHz(433.99);
+  //radio.setFrequencyMHz(868.88);
+  radio.setFrequencyMHz(433.9);
   radio.setPowerLevel(20);
 }
 

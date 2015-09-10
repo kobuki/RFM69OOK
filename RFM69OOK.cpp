@@ -44,10 +44,10 @@ bool RFM69OOK::initialize()
     /* 0x02 */ { REG_DATAMODUL, RF_DATAMODUL_DATAMODE_CONTINUOUSNOBSYNC | RF_DATAMODUL_MODULATIONTYPE_OOK | RF_DATAMODUL_MODULATIONSHAPING_00 }, // no shaping
     /* 0x03 */ { REG_BITRATEMSB, 0x03}, // bitrate: 32768 Hz
     /* 0x04 */ { REG_BITRATELSB, 0xD1},
-    /* 0x19 */ { REG_RXBW, RF_RXBW_DCCFREQ_010 | RF_RXBW_MANT_24 | RF_RXBW_EXP_5}, // BW: 5.2 kHz
+    /* 0x19 */ { REG_RXBW, RF_RXBW_DCCFREQ_010 | RF_RXBW_MANT_24 | RF_RXBW_EXP_4}, // BW: 5.2 kHz
     /* 0x1B */ { REG_OOKPEAK, RF_OOKPEAK_THRESHTYPE_PEAK | RF_OOKPEAK_PEAKTHRESHSTEP_000 | RF_OOKPEAK_PEAKTHRESHDEC_000 },
-    /* 0x1D */ { REG_OOKFIX, 60 }, // Fixed threshold value (in dB) in the OOK demodulator
-    /* 0x29 */ { REG_RSSITHRESH, 140 }, // RSSI threshold in dBm = -(*REG_RSSITHRESH / 2)
+    /* 0x1D */ { REG_OOKFIX, 6 }, // Fixed threshold value (in dB) in the OOK demodulator
+    /* 0x29 */ { REG_RSSITHRESH, 140 }, // RSSI threshold in dBm = -(REG_RSSITHRESH / 2)
     /* 0x6F */ { REG_TESTDAGC, RF_DAGC_IMPROVED_LOWBETA0 }, // run DAGC continuously in RX mode, recommended default for AfcLowBetaOn=0
     {255, 0}
   };
@@ -98,7 +98,7 @@ void RFM69OOK::receiveBegin()
 {
   pinMode(_interruptPin, INPUT);
   setMode(RF69OOK_MODE_RX);
-  attachInterrupt(_interruptNum, RFM69OOK::isr0, CHANGE); // generate interrupts in RX mode
+  if (userInterrupt != NULL) attachInterrupt(_interruptNum, RFM69OOK::isr0, CHANGE); // generate interrupts in RX mode
 }
 
 // Turn the radio back to standby
