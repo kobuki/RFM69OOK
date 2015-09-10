@@ -1,6 +1,6 @@
-/*
-Simple OOK playground -- receives and prints out 0/1 values on the configured channel
-*/
+//
+// Simple OOK playground -- receives and dumps received signal and timing
+//
 
 #include <RFM69OOK.h>
 #include <SPI.h>

@@ -97,8 +97,8 @@ void RFM69OOK::transmitEnd()
 void RFM69OOK::receiveBegin()
 {
   pinMode(_interruptPin, INPUT);
+  attachInterrupt(_interruptNum, RFM69OOK::isr0, CHANGE); // generate interrupts in RX mode
   setMode(RF69OOK_MODE_RX);
-  if (userInterrupt != NULL) attachInterrupt(_interruptNum, RFM69OOK::isr0, CHANGE); // generate interrupts in RX mode
 }
 
 // Turn the radio back to standby
@@ -111,7 +111,6 @@ void RFM69OOK::receiveEnd()
 // Handle pin change interrupts in OOK mode
 void RFM69OOK::interruptHandler()
 {
-  RSSI = readRSSI();
   if (userInterrupt != NULL) (*userInterrupt)();
 }
 
@@ -264,10 +263,8 @@ void RFM69OOK::setCS(byte newSPISlaveSelect) {
 void RFM69OOK::readAllRegs()
 {
   byte regVal;
-
-  for (byte regAddr = 1; regAddr <= 0x4F; regAddr++)
-    {
-    select();
+  select();
+  for (byte regAddr = 1; regAddr <= 0x4F; regAddr++) {
     SPI.transfer(regAddr & 0x7f);   // send address + r/w bit
     regVal = SPI.transfer(0);
     unselect();
@@ -277,7 +274,7 @@ void RFM69OOK::readAllRegs()
     Serial.print(regVal,HEX);
     Serial.print(" - ");
     Serial.println(regVal,BIN);
-    }
+  }
   unselect();
 }
 

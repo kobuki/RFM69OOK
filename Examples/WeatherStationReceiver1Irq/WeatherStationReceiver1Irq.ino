@@ -1,5 +1,5 @@
 /*
-Lidl L08037B outdoors temperature sensor OOK decoder
+Lidl L08037B outdoors temperature sensor OOK decoder - interrupt-driven version
 
 No checksum decoding is done and no data interpretation besides temperature values.
 
@@ -9,6 +9,8 @@ No checksum decoding is done and no data interpretation besides temperature valu
 03: eos
 values: 550 1900 4450 9450
 
+Period: about 35.6 s
+
 1011 0101 1100 0000 1111 0000 1100  240 = 24.0°C
 0011 0101 1100 0001 0001 0101 1100  277 = 27.7°C
 */
@@ -16,6 +18,7 @@ values: 550 1900 4450 9450
 #include <RFM69OOK.h>
 #include <SPI.h>
 #include <RFM69registers.h>
+#include <SimpleFIFO.h>
 
 #define TSIZE 400
 #define MAX_0_DUR 100000 // 100 ms
@@ -23,15 +26,16 @@ values: 550 1900 4450 9450
 #define TOL 50 // +- tolerance
 
 RFM69OOK radio;
+SimpleFIFO<uint32_t, 10> fifo;
 
-uint32_t val, t0 = 0;
-byte bits, s0 = 0;
-bool gotone = false;
-
+volatile uint32_t val, t0 = 0;
+volatile byte bits, s0 = 0;
+volatile bool gotone = false;
 
 void setup() {
   Serial.begin(115200);
 
+  radio.attachUserInterrupt(interrupHandler);
   radio.initialize();
   radio.setFrequencyMHz(433.9);
   radio.receiveBegin();
@@ -41,6 +45,25 @@ void setup() {
 }
 
 void loop() {
+  if (fifo.count() > 0) {
+    uint32_t lval = fifo.dequeue();
+
+    char buf[50];
+    byte bl = sprintf(buf, "%04x", lval >> 16);
+    buf[bl] = 0;
+
+    Serial.print(micros() / 1000);
+    Serial.print(F(": "));
+    Serial.print(buf);
+    sprintf(buf, "%04x", lval);
+    Serial.print(buf);
+    Serial.print(F(" = "));
+    Serial.print(((lval >> 4) & 0xfff) / 10.0);
+    Serial.println(F("\260C"));
+  }
+}
+
+void interrupHandler(void) {
 
   bool s = radio.poll();
   uint32_t t = micros();
@@ -60,17 +83,7 @@ void loop() {
           val |= 1;
           bits++;
         } else if (d > 9450 - TOL && d < 9450 + TOL) {
-          if (bits == 28) {
-            char buf[50];
-            byte bl = sprintf(buf, "%04x", val >> 16);
-            buf[bl] = 0;
-            Serial.print(buf);
-            sprintf(buf, "%04x", val);
-            Serial.print(buf);
-            Serial.print(F(" = "));
-            Serial.print(((val >> 4) & 0xfff) / 10.0);
-            Serial.println(F("\260C"));
-          }
+          if (bits == 28) fifo.enqueue(val);
           val = 0;
           bits = 0;
         }
