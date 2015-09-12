@@ -6,25 +6,25 @@
 // **********************************************************************************
 // License
 // **********************************************************************************
-// This program is free software; you can redistribute it 
-// and/or modify it under the terms of the GNU General    
-// Public License as published by the Free Software       
-// Foundation; either version 2 of the License, or        
-// (at your option) any later version.                    
-//                                                        
-// This program is distributed in the hope that it will   
-// be useful, but WITHOUT ANY WARRANTY; without even the  
-// implied warranty of MERCHANTABILITY or FITNESS FOR A   
-// PARTICULAR PURPOSE.  See the GNU General Public        
-// License for more details.                              
-//                                                        
-// You should have received a copy of the GNU General    
-// Public License along with this program; if not, write 
-// to the Free Software Foundation, Inc.,                
+// This program is free software; you can redistribute it
+// and/or modify it under the terms of the GNU General
+// Public License as published by the Free Software
+// Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will
+// be useful, but WITHOUT ANY WARRANTY; without even the
+// implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE.  See the GNU General Public
+// License for more details.
+//
+// You should have received a copy of the GNU General
+// Public License along with this program; if not, write
+// to the Free Software Foundation, Inc.,
 // 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
-//                                                        
-// Licence can be viewed at                               
-// http://www.fsf.org/licenses/gpl.txt                    
+//
+// Licence can be viewed at
+// http://www.fsf.org/licenses/gpl.txt
 //
 // Please maintain this license information along with authorship
 // and copyright notices in any redistribution of this code
@@ -1107,3 +1107,38 @@
 #define RF_DAGC_NORMAL              0x00  // Reset value
 #define RF_DAGC_IMPROVED_LOWBETA1   0x20
 #define RF_DAGC_IMPROVED_LOWBETA0   0x30  // Recommended default
+
+
+// REG_TESTLNA (SensitivityBoost) values
+#define SENSITIVITY_BOOST_NORMAL  0x1B
+#define SENSITIVITY_BOOST_HIGH    0x2D
+
+
+// OOK-specific values
+
+// REG_RXBW bandwidth in OOK mode
+#define OOK_BW_1_3    RF_RXBW_MANT_24 | RF_RXBW_EXP_7
+#define OOK_BW_1_6    RF_RXBW_MANT_20 | RF_RXBW_EXP_7
+#define OOK_BW_2_0    RF_RXBW_MANT_16 | RF_RXBW_EXP_7
+#define OOK_BW_2_6    RF_RXBW_MANT_24 | RF_RXBW_EXP_6
+#define OOK_BW_3_1    RF_RXBW_MANT_20 | RF_RXBW_EXP_6
+#define OOK_BW_3_9    RF_RXBW_MANT_16 | RF_RXBW_EXP_6
+#define OOK_BW_5_2    RF_RXBW_MANT_24 | RF_RXBW_EXP_5
+#define OOK_BW_6_3    RF_RXBW_MANT_20 | RF_RXBW_EXP_5
+#define OOK_BW_7_8    RF_RXBW_MANT_16 | RF_RXBW_EXP_5
+#define OOK_BW_10_4   RF_RXBW_MANT_24 | RF_RXBW_EXP_4
+#define OOK_BW_12_5   RF_RXBW_MANT_20 | RF_RXBW_EXP_4
+#define OOK_BW_15_6   RF_RXBW_MANT_16 | RF_RXBW_EXP_4
+#define OOK_BW_20_8   RF_RXBW_MANT_24 | RF_RXBW_EXP_3
+#define OOK_BW_25_0   RF_RXBW_MANT_20 | RF_RXBW_EXP_3
+#define OOK_BW_31_3   RF_RXBW_MANT_16 | RF_RXBW_EXP_3
+#define OOK_BW_41_7   RF_RXBW_MANT_24 | RF_RXBW_EXP_2
+#define OOK_BW_50_0   RF_RXBW_MANT_20 | RF_RXBW_EXP_2
+#define OOK_BW_62_5   RF_RXBW_MANT_16 | RF_RXBW_EXP_2
+#define OOK_BW_83_3   RF_RXBW_MANT_24 | RF_RXBW_EXP_1
+#define OOK_BW_100_0  RF_RXBW_MANT_20 | RF_RXBW_EXP_1
+#define OOK_BW_125_0  RF_RXBW_MANT_16 | RF_RXBW_EXP_1
+#define OOK_BW_166_7  RF_RXBW_MANT_24 | RF_RXBW_EXP_0
+#define OOK_BW_200_0  RF_RXBW_MANT_20 | RF_RXBW_EXP_0
+#define OOK_BW_250_0  RF_RXBW_MANT_16 | RF_RXBW_EXP_0
+

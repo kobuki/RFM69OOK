@@ -4,7 +4,7 @@
 
 #include <RFM69OOK.h>
 #include <SPI.h>
-#include <RFM69registers.h>
+#include <RFM69OOKregisters.h>
 
 #define TSIZE 400
 #define MAX_0_DUR 100000 // 100 ms

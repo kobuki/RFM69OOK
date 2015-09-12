@@ -96,6 +96,10 @@ class RFM69OOK {
     bool poll();
     void send(bool signal);
     void attachUserInterrupt(void (*function)());
+	void setBandwidth(uint8_t bw);
+	void setRSSIThreshold(int8_t rssi);
+	void setFixedThreshold(uint8_t threshold);
+	void setSensitivityBoost(uint8_t value);
 
   protected:
     static void isr0();

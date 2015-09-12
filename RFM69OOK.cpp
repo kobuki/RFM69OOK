@@ -29,7 +29,7 @@
 // and copyright notices in any redistribution of this code
 // **********************************************************************************
 #include <RFM69OOK.h>
-#include <RFM69registers.h>
+#include <RFM69OOKregisters.h>
 #include <SPI.h>
 
 volatile byte RFM69OOK::_mode;  // current transceiver state
@@ -44,7 +44,7 @@ bool RFM69OOK::initialize()
     /* 0x02 */ { REG_DATAMODUL, RF_DATAMODUL_DATAMODE_CONTINUOUSNOBSYNC | RF_DATAMODUL_MODULATIONTYPE_OOK | RF_DATAMODUL_MODULATIONSHAPING_00 }, // no shaping
     /* 0x03 */ { REG_BITRATEMSB, 0x03}, // bitrate: 32768 Hz
     /* 0x04 */ { REG_BITRATELSB, 0xD1},
-    /* 0x19 */ { REG_RXBW, RF_RXBW_DCCFREQ_010 | RF_RXBW_MANT_24 | RF_RXBW_EXP_4}, // BW: 5.2 kHz
+    /* 0x19 */ { REG_RXBW, RF_RXBW_DCCFREQ_010 | RF_RXBW_MANT_24 | RF_RXBW_EXP_4}, // BW: 10.4 kHz
     /* 0x1B */ { REG_OOKPEAK, RF_OOKPEAK_THRESHTYPE_PEAK | RF_OOKPEAK_PEAKTHRESHSTEP_000 | RF_OOKPEAK_PEAKTHRESHDEC_000 },
     /* 0x1D */ { REG_OOKFIX, 6 }, // Fixed threshold value (in dB) in the OOK demodulator
     /* 0x29 */ { REG_RSSITHRESH, 140 }, // RSSI threshold in dBm = -(REG_RSSITHRESH / 2)
@@ -141,6 +141,31 @@ void RFM69OOK::setFrequency(uint32_t freqHz)
   writeReg(REG_FRFMSB, freqHz >> 16);
   writeReg(REG_FRFMID, freqHz >> 8);
   writeReg(REG_FRFLSB, freqHz);
+}
+
+// set OOK bandwidth
+void RFM69OOK::setBandwidth(uint8_t bw)
+{
+  writeReg(REG_RXBW, readReg(REG_RXBW) & 0xE0 | bw);
+}
+
+// set RSSI threshold
+void RFM69OOK::setRSSIThreshold(int8_t rssi)
+{
+  writeReg(REG_RSSITHRESH, -(rssi << 1));
+}
+
+// set OOK fixed threshold
+void RFM69OOK::setFixedThreshold(uint8_t threshold)
+{
+  writeReg(REG_OOKFIX, threshold);
+}
+
+// set sensitivity boost in REG_TESTLNA
+// see: http://www.sevenwatt.com/main/rfm69-ook-dagc-sensitivity-boost-and-modulation-index
+void RFM69OOK::setSensitivityBoost(uint8_t value)
+{
+  writeReg(REG_TESTLNA, value);
 }
 
 void RFM69OOK::setMode(byte newMode)

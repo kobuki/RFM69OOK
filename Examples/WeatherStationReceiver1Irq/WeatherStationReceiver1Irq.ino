@@ -11,19 +11,17 @@ values: 550 1900 4450 9450
 
 Period: about 35.6 s
 
-1011 0101 1100 0000 1111 0000 1100  240 = 24.0°C
-0011 0101 1100 0001 0001 0101 1100  277 = 27.7°C
+1011 0101 1100 0000 1111 0000 1100  0x0f0 = 240 = 24.0°C
+0011 0101 1100 0001 0001 0101 1100  0x115 = 277 = 27.7°C
+               ^^^^ ^^^^ ^^^^
 */
 
 #include <RFM69OOK.h>
 #include <SPI.h>
-#include <RFM69registers.h>
+#include <RFM69OOKregisters.h>
 #include <SimpleFIFO.h>
 
-#define TSIZE 400
-#define MAX_0_DUR 100000 // 100 ms
-#define MIN_1_DUR 100 // 100 us
-#define TOL 50 // +- tolerance
+#define TOL 50 // +- pulse tolerance in us
 
 RFM69OOK radio;
 SimpleFIFO<uint32_t, 10> fifo;
@@ -37,6 +35,13 @@ void setup() {
 
   radio.attachUserInterrupt(interrupHandler);
   radio.initialize();
+
+  // some easily tunable parameters
+  // radio.setBandwidth(OOK_BW_10_4); // generally this default value seems fine (10.4 kHz)
+  // radio.setRSSIThreshold(-70);     // |- use higher values when signal is too strong or too much noise
+  // radio.setFixedThreshold(6);      // |
+  radio.setSensitivityBoost(SENSITIVITY_BOOST_HIGH);
+
   radio.setFrequencyMHz(433.9);
   radio.receiveBegin();
 
