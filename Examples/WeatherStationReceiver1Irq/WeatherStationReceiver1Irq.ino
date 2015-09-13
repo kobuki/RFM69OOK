@@ -39,7 +39,7 @@ void setup() {
   // some easily tunable parameters
   // radio.setBandwidth(OOK_BW_10_4); // generally this default value seems fine (10.4 kHz)
   // radio.setRSSIThreshold(-70);     // |- use higher values when signal is too strong or too much noise
-  // radio.setFixedThreshold(6);      // |
+  radio.setFixedThreshold(30);        // |
   // radio.setSensitivityBoost(SENSITIVITY_BOOST_HIGH); // it can increase sensitivity in some cases
 
   radio.setFrequencyMHz(433.9);

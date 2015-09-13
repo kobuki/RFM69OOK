@@ -8,7 +8,7 @@
 
 #define TSIZE 400
 #define MAX_0_DUR 100000 // 100 ms
-#define MIN_1_DUR 100 // 100 us
+#define MIN_1_DUR 50 // 100 us
 #define TOL 50 // +- tolerance
 
 RFM69OOK radio;
@@ -24,6 +24,10 @@ void setup() {
   Serial.begin(115200);
 
   radio.initialize();
+//  radio.setBandwidth(OOK_BW_10_4);
+//  radio.setRSSIThreshold(-70);
+  radio.setFixedThreshold(30);
+//  radio.setSensitivityBoost(SENSITIVITY_BOOST_HIGH);
   radio.setFrequencyMHz(433.9);
   radio.receiveBegin();
 
