@@ -38,13 +38,12 @@
 #if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega88) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__)
   #define RF69OOK_IRQ_PIN          3
   #define RF69OOK_IRQ_NUM          1
-// TODO: fix these for the various chips
-//#elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)
-//  #define RF69OOK_IRQ_PIN          2
-//  #define RF69OOK_IRQ_NUM          2
-//#elif defined(__AVR_ATmega32U4__)
-//  #define RF69OOK_IRQ_PIN          3
-//  #define RF69OOK_IRQ_NUM          0
+#elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)
+  #define RF69OOK_IRQ_PIN          10
+  #define RF69OOK_IRQ_NUM          0
+#elif defined(__AVR_ATmega32U4__)
+  #define RF69OOK_IRQ_PIN          3
+  #define RF69OOK_IRQ_NUM          0
 #endif
 
 #define RF69OOK_MODE_SLEEP       0 // XTAL OFF
