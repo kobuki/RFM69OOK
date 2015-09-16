@@ -63,7 +63,7 @@ void loop() {
     Serial.print("time: ");
     Serial.println(micros() / 1000);
     s = 1;
-    for (byte i = 0; i < pos; i++) {
+    for (int i = 0; i < pos; i++) {
       Serial.print(i);
       Serial.print(F(": "));
       Serial.print(s);
