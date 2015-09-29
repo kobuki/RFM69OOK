@@ -15,4 +15,4 @@ First, for this library to work, a simple change needs to be made on the Moteino
 Moteino model                | RFM69 pin | Moteino pin
 ---------------------------- | --------- | -------------
 All Moteinos with Atmega328p | DIO2      | 3
-Content Cell                 | DIO2      | 10
+Moteino Mega                 | DIO2      | 10
