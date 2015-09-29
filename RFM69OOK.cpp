@@ -288,19 +288,14 @@ void RFM69OOK::setCS(byte newSPISlaveSelect) {
 void RFM69OOK::readAllRegs()
 {
   byte regVal;
-  select();
   for (byte regAddr = 1; regAddr <= 0x4F; regAddr++) {
-    SPI.transfer(regAddr & 0x7f);   // send address + r/w bit
-    regVal = SPI.transfer(0);
-    unselect();
-
+    regVal = readReg(regAddr);
     Serial.print(regAddr, HEX);
     Serial.print(" - ");
     Serial.print(regVal,HEX);
     Serial.print(" - ");
     Serial.println(regVal,BIN);
   }
-  unselect();
 }
 
 byte RFM69OOK::readTemperature(byte calFactor)  // returns centigrade
