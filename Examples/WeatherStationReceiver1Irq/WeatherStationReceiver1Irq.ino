@@ -14,6 +14,14 @@ Period: about 35.6 s
 1011 0101 1100 0000 1111 0000 1100  0x0f0 = 240 = 24.0°C
 0011 0101 1100 0001 0001 0101 1100  0x115 = 277 = 27.7°C
                ^^^^ ^^^^ ^^^^
+
+Later discovery shows that this protocol seems to be identical to the one used
+by some Hyundai weather stations, see here:
+http://blog.atx.name/reverse-engineering-radio-weather-station/
+
+According to this, checksum is the lower nibble of the sum of all nibbles added
+but the checksum nibble itself + 0b1111.
+
 */
 
 #include <RFM69OOK.h>
@@ -38,8 +46,8 @@ void setup() {
 
   // some easily tunable parameters
   // radio.setBandwidth(OOK_BW_10_4); // generally this default value seems fine (10.4 kHz)
-  // radio.setRSSIThreshold(-70);     // |- use higher values when signal is too strong or too much noise
-  radio.setFixedThreshold(30);        // |
+  // radio.setRSSIThreshold(-90);     // |- use higher values when signal is too strong or too much noise
+  radio.setFixedThreshold(15);        // |
   // radio.setSensitivityBoost(SENSITIVITY_BOOST_HIGH); // it can increase sensitivity in some cases
 
   radio.setFrequencyMHz(433.9);
@@ -53,6 +61,10 @@ void loop() {
   if (fifo.count() > 0) {
     uint32_t lval = fifo.dequeue();
 
+    byte checksum = 0xf;
+    for (byte i = 0; i < 6; i++) checksum += (lval >> i * 4);
+    checksum &= 0xf;
+
     char buf[50];
     byte bl = sprintf(buf, "%04x", lval >> 16);
     buf[bl] = 0;
@@ -64,7 +76,8 @@ void loop() {
     Serial.print(buf);
     Serial.print(F(" = "));
     Serial.print(((lval >> 4) & 0xfff) / 10.0);
-    Serial.println(F("\260C"));
+    Serial.print(F("\260C, checksum "));
+    Serial.println(lval >> 24 == checksum ? F("OK") : F("ERR"));
   }
 }
 
