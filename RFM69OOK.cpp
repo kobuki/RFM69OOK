@@ -143,6 +143,14 @@ void RFM69OOK::setFrequency(uint32_t freqHz)
   writeReg(REG_FRFLSB, freqHz);
 }
 
+// Set bitrate
+void RFM69OOK::setBitrate(uint32_t bitrate)
+{
+  bitrate = 32000000 / bitrate; // 32M = XCO freq.
+  writeReg(REG_BITRATEMSB, bitrate >> 8);
+  writeReg(REG_BITRATELSB, bitrate);
+}
+
 // set OOK bandwidth
 void RFM69OOK::setBandwidth(uint8_t bw)
 {
@@ -152,7 +160,7 @@ void RFM69OOK::setBandwidth(uint8_t bw)
 // set RSSI threshold
 void RFM69OOK::setRSSIThreshold(int8_t rssi)
 {
-  writeReg(REG_RSSITHRESH, -(rssi << 1));
+  writeReg(REG_RSSITHRESH, (-rssi << 1));
 }
 
 // set OOK fixed threshold
@@ -213,17 +221,14 @@ void RFM69OOK::setPowerLevel(byte powerLevel)
 
 void RFM69OOK::isr0() { selfPointer->interruptHandler(); }
 
-int RFM69OOK::readRSSI(bool forceTrigger) {
-  int rssi = 0;
+int8_t RFM69OOK::readRSSI(bool forceTrigger) {
   if (forceTrigger)
   {
     // RSSI trigger not needed if DAGC is in continuous mode
     writeReg(REG_RSSICONFIG, RF_RSSI_START);
     while ((readReg(REG_RSSICONFIG) & RF_RSSI_DONE) == 0x00); // Wait for RSSI_Ready
   }
-  rssi = -readReg(REG_RSSIVALUE);
-  rssi >>= 1;
-  return rssi;
+  return -(readReg(REG_RSSIVALUE) >> 1);
 }
 
 byte RFM69OOK::readReg(byte addr)

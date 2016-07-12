@@ -75,7 +75,7 @@ class RFM69OOK {
     void setFrequency(uint32_t freqHz);
     void setFrequencyMHz(float f);
     void setCS(byte newSPISlaveSelect);
-    int readRSSI(bool forceTrigger=false);
+    int8_t readRSSI(bool forceTrigger=false);
     void setHighPower(bool onOFF=true); //have to call it after initialize for RFM69HW
     void setPowerLevel(byte level); //reduce/increase transmit power level
     void sleep();
@@ -96,9 +96,13 @@ class RFM69OOK {
     void send(bool signal);
     void attachUserInterrupt(void (*function)());
 	void setBandwidth(uint8_t bw);
+    void setBitrate(uint32_t bitrate);
 	void setRSSIThreshold(int8_t rssi);
 	void setFixedThreshold(uint8_t threshold);
 	void setSensitivityBoost(uint8_t value);
+
+    void select();
+    void unselect();
 
   protected:
     static void isr0();
@@ -115,8 +119,6 @@ class RFM69OOK {
 
     void setMode(byte mode);
     void setHighPowerRegs(bool onOff);
-    void select();
-    void unselect();
 
     // functions related to OOK mode
     void (*userInterrupt)();
