@@ -66,6 +66,18 @@ bool RFM69OOK::initialize()
   return true;
 }
 
+void RFM69OOK::reset() // maroprjs : Manual Reset
+{
+	pinMode(_rstPin, OUTPUT);
+	delay(10);
+	digitalWrite(_rstPin,LOW);
+	delay(10);
+	digitalWrite(_rstPin,HIGH);
+	delay(150);
+	digitalWrite(_rstPin,LOW);
+	delay(7);
+}
+
 // Poll for OOK signal
 bool RFM69OOK::poll()
 {
