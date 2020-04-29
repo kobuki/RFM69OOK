@@ -44,6 +44,18 @@
 #elif defined(__AVR_ATmega32U4__)
   #define RF69OOK_IRQ_PIN          3
   #define RF69OOK_IRQ_NUM          0
+#elif defined(CORE_TEENSY) && defined(__MK20DX128__)
+  #define RF69OOK_IRQ_PIN          4
+  #define RF69OOK_IRQ_NUM          0
+#elif defined(CORE_TEENSY) && defined(__MK20DX256__)
+  #define RF69OOK_IRQ_PIN          4
+  #define RF69OOK_IRQ_NUM          0
+#elif defined(CORE_TEENSY) && defined(__MK66FX1M0__)
+  #define RF69OOK_IRQ_PIN          4
+  #define RF69OOK_IRQ_NUM          0
+#elif defined(ARDUINO_SAMD_ZERO)
+  #define RF69OOK_IRQ_PIN          6
+  #define RF69OOK_IRQ_NUM          0
 #endif
 
 #define RF69OOK_MODE_SLEEP       0 // XTAL OFF
