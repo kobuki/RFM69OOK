@@ -56,6 +56,9 @@
 #elif defined(ARDUINO_SAMD_ZERO)
   #define RF69OOK_IRQ_PIN          6
   #define RF69OOK_IRQ_NUM          0
+#elif defined(ESP32)
+  #define RF69OOK_IRQ_PIN          35
+  #define RF69OOK_IRQ_NUM          digitalPinToInterrupt(RF69OOK_IRQ_PIN)  
 #endif
 
 #define RF69OOK_MODE_SLEEP       0 // XTAL OFF
